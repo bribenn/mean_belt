@@ -1,0 +1,14 @@
+<div ng-init="UC.show()">
+	<a href="#!/dashboard">Home</a>
+	{{UC.user.name}}'s Bucket List
+	<div>
+		Done:
+		<div > 
+			<p ng-repeat="item in UC.user.bucket_list_items"></p>
+		</div>
+		Pending: 
+		<div ng-if="user.bucket_list_items.done !== true"> 
+			<p ng-repeat="item in UC.user.bucket_list_items"></p>
+		</div>
+	</div>
+</div>

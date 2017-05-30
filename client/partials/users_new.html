@@ -1,0 +1,9 @@
+<div>
+	<div>Bucket Lists</div>
+	<label>Name:</label>
+	<form ng-submit='UC.create(UC.newUser)'>
+		<input type="text" ng-model="UC.newUser.name">
+		<input type="submit" value="Enter">
+	</form>
+	<p class="error" ng-repeat="error in UC.errors">{{error}}</p>
+</div>
