@@ -2,13 +2,23 @@
 	<a href="#!/dashboard">Home</a>
 	{{UC.user.name}}'s Bucket List
 	<div>
-		Done:
-		<div > 
-			<p ng-repeat="item in UC.user.bucket_list_items"></p>
+		<h3>Done:</h3>
+		<div ng-repeat="item in UC.user.bucket_list_items" ng-if="item.done === true">
+			<input type="checkbox" disabled checked>
+			<p>{{item.user.name}}</p>
+			<p>{{item.title}}</p>
+			<p>{{item.description}}</p>
+			<p>{{item.createdAt}}</p>
+			<hr>
 		</div>
-		Pending: 
-		<div ng-if="user.bucket_list_items.done !== true"> 
-			<p ng-repeat="item in UC.user.bucket_list_items"></p>
-		</div>
+		<h3>Pending:</h3>
+		<div ng-repeat="item in UC.user.bucket_list_items" ng-if="item.done === false">
+			<input type="checkbox" disabled>
+			<p>{{item.user.name}}</p>
+			<p>{{item.title}}</p>
+			<p>{{item.description}}</p>
+			<p>{{item.createdAt}}</p>
+			<hr>
+		</div> 
 	</div>
 </div>

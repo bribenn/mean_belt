@@ -1,13 +1,28 @@
 var mongoose = require('mongoose')
 var User = mongoose.model('User')
+var BucketList = mongoose.model('BucketList')
 
 module.exports = {
 	create: function(request, response){
-		User.create(request.body, function(err, user){
-			if(err){
+		//Check if user already in database
+		User.findOne({name: request.body.name}, function(err, user) {
+			if (user) {
+				return response.json(user)
+			}
+			else if (err) {
 				return response.json(err)
 			}
-			return response.json(user)
+			else {
+				//Name not in database, so create the user
+				User.create(request.body, function(err, user) {
+					if (err) {
+						return response.json(err)
+					}
+
+					return response.json(user)
+				})
+			}
+
 		})
 	},
 	index: function(request, response){
@@ -19,7 +34,16 @@ module.exports = {
 		})
 	},
 	show: function(request, response){
-		User.findById(request.params.id).populate('bucket_list_items').exec(function(err, user){
+		// need to deep populate bucket list
+		User.findById(request.params.id).populate({
+			path: 'bucket_list_items',
+			model: 'BucketList',
+			populate: {
+				path: 'user',
+				model: 'User'
+			}
+		})
+		.exec(function(err, user){
 			if(err){
 				return response.json(err);
 			}
@@ -30,5 +54,5 @@ module.exports = {
 			}
 			return response.json(user);
 		})
-	},
+	}
 }

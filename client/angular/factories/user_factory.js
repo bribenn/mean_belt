@@ -22,6 +22,10 @@ app.factory('UserFactory', function($http, $cookies){
 	factory.show = function(id, callback) {
       $http.get('/users/' + id).then(callback)
 	}
+	factory.updateStatus = function(id, callback){
+		console.log('id: ', id);
+		$http.put('/bucketlists/' + id).then(callback)
+	}
 
 	return factory;
 });

@@ -1,38 +1,42 @@
 <div class="container" ng-init="UC.session()">
+		<div>
+			<a href="#" ng-click="UC.logout()">Logout</a>
+		</div>
+		Welcome, {{UC.current_user.name}} 
+	<!-- create a bucket list item -->
 	<div>
-		<a href="#" ng-click="UC.logout()">Logout</a>
+		<div class="addBL">
+			<form ng-submit="UC.createItem()">
+				<input type="text" placeholder="Title" ng-model="UC.newItem.title">
+				<input type="text" placeholder="Description" ng-model="UC.newItem.description">
+				<div ng-init="UC.index()">
+					<select ng-model="UC.newItem.tag">
+						<option ng-if="UC.current_user._id != user._id" ng-repeat="user in UC.users">{{user.name}}</option>
+					</select>
+				</div>
+				<input type="submit" value="Add to List">
+			</form>
+			<p class="error" ng-repeat="error in UC.new_item_errors">{{error}}</p>
+		</div>
+	<!-- lists users bucketlists -->
+		<div>
+			Before I die I want to:
+				<div ng-repeat="item in UC.current_user.bucket_list_items">
+				<!-- add ng-if to show only when bucket_list_item.user = current_user._id -->
+					<input type="checkbox" checked ng-if="item.user._id == UC.current_user._id && item.done === true" ng-click="UC.updateStatus(item._id)">
+					<input type="checkbox" ng-if="item.user._id == UC.current_user._id && item.done === false" ng-click="UC.updateStatus(item._id)">
+					<p>{{item.user.name}}</p>
+					<p>{{item.title}}</p>
+					<p>{{item.description}}</p>
+					<p>{{item.createdAt}}</p>
+					<hr>
+				</div>
+		</div>
 	</div>
-	Welcome, {{UC.current_user.name}} 
-<!-- create a bucket list item -->
-<div ng-controller="BucketListController as BC">
-	<div class="addBL">
-		<form ng-submit="BC.create()">
-			<input type="text" placeholder="Title" ng-model="BC.newItem.title">
-			<input type="text" placeholder="Description" ng-model="BC.newItem.description">
-			<div ng-init="UC.index()">
-				<select ng-model="BC.newItem.tag">
-					<option ng-repeat="user in UC.users">{{user.name}}</option>
-				</select>
-			</div>
-			<input type="submit" value="Add to List">
-		</form>
-		<p class="error" ng-repeat="error in BC.new_item_errors">{{error}}</p>
-	</div>
-<!-- lists all bucketlists -->
-	<div ng-init="BC.index()">
-		Before I die I want to:
-			<div ng-repeat="bucketList in BC.bucketLists">
-				<a href="" ng-if="bucketList.done === false" ng-click="updateStatus(bucketList._id)">Done</a>
-				<p>{{bucketList.user.name}}</p>
-				<p>{{bucketList.title}}</p>
-				<p>{{bucketList.description}}</p>
-				<p>{{bucketList.createdAt}}</p>
-			</div>
-	</div>
-</div>
-<!-- list links to other users -->
-	<div ng-init="UC.index()">
-		<p>List of other Users (click to view profile):</p>
-		<p ng-repeat="user in UC.users"><a href="#!/users/{{user._id}}">{{user.name}}</a></p>
+	<!-- list links to other users -->
+		<div ng-init="UC.index()">
+			<p>List of other Users (click to view profile):</p>
+			<p ng-repeat="user in UC.users"><a href="#!/users/{{user._id}}">{{user.name}}</a></p>
+		</div>
 	</div>
 </div>

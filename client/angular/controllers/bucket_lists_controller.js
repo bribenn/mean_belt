@@ -25,15 +25,10 @@ app.controller('BucketListController', function(BucketListFactory, UserFactory, 
 						}
 					}
 					else {
-						self.index()
+						self.session()
 						self.newItem = {}
 					}
 			})
-		})
-	}
-	self.updateStatus = function(bucketList_id){
-		BucketListFactory.updateStatus(function(bucketList_id){
-			self.index()
 		})
 	}
 })

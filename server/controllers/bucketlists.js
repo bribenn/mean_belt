@@ -36,13 +36,17 @@ module.exports = {
 	},
 	updateStatus: function(request, response){
 		console.log(request.body)
-		BucketList.findByIdAndUpdate(request.params.id, {$set: {'done': true }}, { new: true }, function(err, bucketList){
+		BucketList.findById(request.params.id, function(err, bucket){
 			if(err){
-				console.log(err);
 				return response.json(err);
 			}
-			console.log(bucketList);
-			return response.json(bucketList);
+			bucket.done = !bucket.done;
+			bucket.save(function(err, bucket){
+				if(err){
+					return response.json(err);
+				}
+				return response.json(bucket);
+			})
 		})
 	}
 }

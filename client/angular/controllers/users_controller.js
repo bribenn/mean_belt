@@ -1,4 +1,4 @@
-app.controller('UsersController', function(UserFactory, $routeParams, $cookies, $location){
+app.controller('UsersController', function(UserFactory, BucketListFactory, $routeParams, $cookies, $location){
 	console.log('initializing UsersController')
 	
 	var self = this
@@ -50,5 +50,28 @@ app.controller('UsersController', function(UserFactory, $routeParams, $cookies, 
 	self.logout = function(){
 		$cookies.remove('user_id')
 		$location.url('/')
+	}
+	self.updateStatus = function(bucketList_id){
+		console.log(bucketList_id)
+		UserFactory.updateStatus(bucketList_id, self.session)
+	}
+	self.createItem = function(){
+		self.new_item_errors = []
+		
+		UserFactory.session(function(user){
+			self.newItem.user = user._id
+			BucketListFactory.create(self.newItem, function(response){
+					if(response.data.errors){
+						for(key in response.data.errors){
+							var error = response.data.errors[key]
+							self.new_item_errors.push(error.message)
+						}
+					}
+					else {
+						self.session()
+						self.newItem = {}
+					}
+			})
+		})
 	}
 })
