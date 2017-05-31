@@ -7,9 +7,6 @@ app.factory('BucketListFactory', function($http, $cookies){
 	factory.index = function(callback){
 		$http.get('/bucketlists').then(callback)
 	}
-	factory.updateStatus = function(id, callback){
-		$http.put('/bucketlists/' + id).then(callback)
-	}
 
 	return factory;
 });
